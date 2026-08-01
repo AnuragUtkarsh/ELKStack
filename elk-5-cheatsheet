@@ -1,0 +1,714 @@
+====================================================================
+                ELK 5-MINUTE CHEAT SHEET
+====================================================================
+
+Author : Anurag
+
+====================================================================
+ELK
+====================================================================
+
+E
+
+Elasticsearch
+
+Stores Logs
+
+Search Engine
+
+JSON Database
+
+Port
+
+9200
+
+REST API
+
+9300
+
+Node Communication
+
+--------------------------------------------------
+
+L
+
+Logstash
+
+Collect
+
+Parse
+
+Transform
+
+Forward
+
+Port
+
+5044
+
+--------------------------------------------------
+
+K
+
+Kibana
+
+Visualization
+
+Dashboard
+
+Discover
+
+Lens
+
+Port
+
+5601
+
+--------------------------------------------------
+
+Filebeat
+
+Lightweight Log Shipper
+
+Collects Logs
+
+Sends Logs
+
+↓
+
+Logstash
+
+or
+
+↓
+
+Elasticsearch
+
+====================================================================
+DATA FLOW
+====================================================================
+
+Application
+
+↓
+
+Log File
+
+↓
+
+Filebeat
+
+↓
+
+Logstash
+
+↓
+
+Elasticsearch
+
+↓
+
+Kibana
+
+====================================================================
+CONFIGURATION FILES
+====================================================================
+
+Elasticsearch
+
+/etc/elasticsearch/elasticsearch.yml
+
+JVM
+
+/etc/elasticsearch/jvm.options
+
+Logstash
+
+/etc/logstash/logstash.yml
+
+Pipeline
+
+/etc/logstash/conf.d/
+
+Filebeat
+
+/etc/filebeat/filebeat.yml
+
+Kibana
+
+/etc/kibana/kibana.yml
+
+====================================================================
+IMPORTANT PORTS
+====================================================================
+
+9200
+
+REST API
+
+9300
+
+Cluster Communication
+
+5044
+
+Beats Input
+
+5601
+
+Kibana
+
+====================================================================
+PIPELINE
+====================================================================
+
+Input
+
+↓
+
+Filter
+
+↓
+
+Output
+
+====================================================================
+LOGSTASH FILTERS
+====================================================================
+
+Grok
+
+Extract Fields
+
+Mutate
+
+Modify Fields
+
+Date
+
+Convert String
+
+↓
+
+Timestamp
+
+GeoIP
+
+IP
+
+↓
+
+Country
+
+City
+
+Latitude
+
+Longitude
+
+Drop
+
+Discard Logs
+
+Conditionals
+
+if
+
+else
+
+====================================================================
+PRIMARY vs REPLICA
+====================================================================
+
+Primary Shard
+
+Original Data
+
+Accepts Writes
+
+--------------------------------------------------
+
+Replica Shard
+
+Copy of Primary
+
+Read Requests
+
+High Availability
+
+Cannot Exist
+
+Without Primary
+
+====================================================================
+CLUSTER HEALTH
+====================================================================
+
+GREEN
+
+Everything Healthy
+
+Primary
+
++
+
+Replica
+
+Allocated
+
+--------------------------------------------------
+
+YELLOW
+
+Primary Available
+
+Replica Missing
+
+Mostly Single Node
+
+--------------------------------------------------
+
+RED
+
+Primary Missing
+
+Data Unavailable
+
+====================================================================
+ELASTICSEARCH APIs
+====================================================================
+
+Cluster Health
+
+curl localhost:9200/_cluster/health
+
+Indices
+
+curl localhost:9200/_cat/indices?v
+
+Nodes
+
+curl localhost:9200/_cat/nodes?v
+
+====================================================================
+IMPORTANT COMMANDS
+====================================================================
+
+systemctl status elasticsearch
+
+systemctl status kibana
+
+systemctl status logstash
+
+systemctl status filebeat
+
+--------------------------------------------------
+
+Restart
+
+systemctl restart elasticsearch
+
+systemctl restart kibana
+
+systemctl restart logstash
+
+systemctl restart filebeat
+
+--------------------------------------------------
+
+Logs
+
+journalctl -u elasticsearch
+
+journalctl -u kibana
+
+journalctl -u logstash
+
+journalctl -u filebeat
+
+--------------------------------------------------
+
+Config Test
+
+filebeat test config
+
+filebeat test output
+
+/usr/share/logstash/bin/logstash --path.settings /etc/logstash -t
+
+====================================================================
+KIBANA
+====================================================================
+
+Data View
+
+↓
+
+Discover
+
+↓
+
+Lens
+
+↓
+
+Dashboard
+
+====================================================================
+FILEBEAT
+====================================================================
+
+Harvester
+
+Reads One File
+
+Registry
+
+Stores Offset
+
+Offset
+
+Current Read Position
+
+Modules
+
+Ready-made Configurations
+
+====================================================================
+LOGSTASH
+====================================================================
+
+Input
+
+↓
+
+Filter
+
+↓
+
+Output
+
+Common Inputs
+
+beats
+
+file
+
+tcp
+
+udp
+
+Common Outputs
+
+Elasticsearch
+
+stdout
+
+file
+
+Common Filters
+
+Grok
+
+Mutate
+
+Date
+
+GeoIP
+
+Drop
+
+Dissect
+
+====================================================================
+INTERVIEW ONE LINERS
+====================================================================
+
+What is ELK?
+
+Log Collection
+
+Processing
+
+Searching
+
+Visualization
+
+--------------------------------------------------
+
+Difference between Filebeat and Logstash?
+
+Filebeat
+
+Collects Logs
+
+Lightweight
+
+Logstash
+
+Parses
+
+Transforms
+
+Heavy
+
+--------------------------------------------------
+
+Difference between Elasticsearch and Kibana?
+
+Elasticsearch
+
+Stores Data
+
+Kibana
+
+Visualizes Data
+
+--------------------------------------------------
+
+Difference between 9200 and 9300?
+
+9200
+
+REST API
+
+9300
+
+Cluster Communication
+
+--------------------------------------------------
+
+Difference between Grok and Dissect?
+
+Grok
+
+Regex
+
+Flexible
+
+Slow
+
+Dissect
+
+Delimiter Based
+
+Fast
+
+Fixed Format
+
+--------------------------------------------------
+
+Why Date Filter?
+
+Convert String
+
+↓
+
+Timestamp
+
+--------------------------------------------------
+
+Why GeoIP?
+
+IP
+
+↓
+
+Country
+
+City
+
+Latitude
+
+Longitude
+
+--------------------------------------------------
+
+Why Mutate?
+
+Modify Parsed Fields
+
+--------------------------------------------------
+
+Why Grok?
+
+Extract Fields
+
+====================================================================
+TROUBLESHOOTING FLOW
+====================================================================
+
+Application
+
+↓
+
+Log File
+
+↓
+
+Filebeat
+
+↓
+
+Logstash
+
+↓
+
+Elasticsearch
+
+↓
+
+Kibana
+
+Never Start from Dashboard.
+
+Always Troubleshoot Bottom-Up.
+
+====================================================================
+PRODUCTION CHECKLIST
+====================================================================
+
+□ Service Running
+
+□ Port Listening
+
+□ Configuration Valid
+
+□ Logs Checked
+
+□ Elasticsearch Healthy
+
+□ Index Created
+
+□ Data View Created
+
+□ Discover Working
+
+□ Dashboard Working
+
+====================================================================
+50 RAPID FIRE
+====================================================================
+
+ELK?
+
+Elasticsearch Logstash Kibana
+
+Port ES?
+
+9200
+
+Cluster Port?
+
+9300
+
+Logstash?
+
+5044
+
+Kibana?
+
+5601
+
+Filebeat Purpose?
+
+Collect Logs
+
+Logstash Purpose?
+
+Parse Logs
+
+Kibana Purpose?
+
+Visualization
+
+Elasticsearch Purpose?
+
+Storage + Search
+
+Yellow?
+
+Replica Missing
+
+Red?
+
+Primary Missing
+
+Green?
+
+Healthy
+
+Pipeline?
+
+Input Filter Output
+
+Index?
+
+Database
+
+Document?
+
+JSON Record
+
+Cluster?
+
+Collection of Nodes
+
+Node?
+
+One Elasticsearch Server
+
+Primary?
+
+Original
+
+Replica?
+
+Copy
+
+Grok?
+
+Extract
+
+Mutate?
+
+Modify
+
+Date?
+
+Timestamp
+
+GeoIP?
+
+Location
+
+Discover?
+
+Search Logs
+
+Lens?
+
+Visualization
+
+Dashboard?
+
+Multiple Visualizations
+
+Data View?
+
+Index Pattern
+
+Registry?
+
+Offset
+
+Harvester?
+
+Read File
+
+Heap?
+
+Java Memory
+
+====================================================================
+END
