@@ -1,0 +1,534 @@
+====================================================================
+                05-FILEBEAT-INTERVIEW.txt
+====================================================================
+
+Author : Anurag
+Purpose: Linux Engineer / DevOps Interview Revision
+
+====================================================================
+1. WHAT IS FILEBEAT?
+====================================================================
+
+Filebeat is a lightweight log shipper.
+
+Purpose
+
+Collect logs
+
+↓
+
+Send logs
+
+↓
+
+Logstash / Elasticsearch
+
+Very Low CPU Usage
+
+Very Low Memory Usage
+
+Developed by Elastic.
+
+====================================================================
+2. FILEBEAT ARCHITECTURE
+====================================================================
+
+Log File
+
+↓
+
+Harvester
+
+↓
+
+Input
+
+↓
+
+Processors
+
+↓
+
+Output
+
+↓
+
+Logstash
+
+or
+
+Elasticsearch
+
+====================================================================
+3. HARVESTER
+====================================================================
+
+Harvester is responsible for reading a single log file.
+
+Example
+
+/var/log/messages
+
+↓
+
+One Harvester
+
+Another Log File
+
+↓
+
+Another Harvester
+
+Every file has its own Harvester.
+
+====================================================================
+4. INPUT
+====================================================================
+
+Input tells Filebeat
+
+Which logs to monitor.
+
+Example
+
+filestream
+
+log (Old)
+
+stdin
+
+Most Common
+
+filestream
+
+====================================================================
+5. FILESTREAM
+====================================================================
+
+Modern Filebeat Input.
+
+Replaces old "log" input.
+
+Better Performance.
+
+Better File Rotation Handling.
+
+Lower Resource Usage.
+
+====================================================================
+6. PROCESSORS
+====================================================================
+
+Processors modify events before sending.
+
+Examples
+
+add_host_metadata
+
+add_cloud_metadata
+
+add_docker_metadata
+
+drop_fields
+
+drop_event
+
+rename
+
+decode_json_fields
+
+====================================================================
+7. OUTPUT
+====================================================================
+
+Filebeat supports multiple outputs.
+
+Common Outputs
+
+Logstash
+
+Elasticsearch
+
+Kafka
+
+Redis
+
+Console
+
+File
+
+Most Common
+
+Logstash
+
+Elasticsearch
+
+====================================================================
+8. REGISTRY FILE
+====================================================================
+
+Very Important.
+
+Registry stores
+
+Current Read Position
+
+(File Offset)
+
+Purpose
+
+Avoid duplicate log reading.
+
+If Filebeat restarts,
+
+Reading starts from previous offset.
+
+Not from beginning.
+
+====================================================================
+9. OFFSET
+====================================================================
+
+Offset means
+
+Current byte position inside log file.
+
+Example
+
+100 MB Log
+
+Offset
+
+25 MB
+
+Means
+
+25 MB already read.
+
+====================================================================
+10. MULTILINE
+====================================================================
+
+Used for
+
+Java Exceptions
+
+Python Traceback
+
+Stack Traces
+
+Instead of
+
+10 Events
+
+↓
+
+One Event
+
+====================================================================
+11. MODULES
+====================================================================
+
+Ready-made configurations.
+
+Examples
+
+Apache
+
+Nginx
+
+MySQL
+
+System
+
+Kafka
+
+PostgreSQL
+
+Modules already contain
+
+Input
+
+Parsing
+
+Dashboard
+
+====================================================================
+12. FILEBEAT CONFIGURATION
+====================================================================
+
+Configuration File
+
+/etc/filebeat/filebeat.yml
+
+Test Configuration
+
+filebeat test config
+
+Restart
+
+systemctl restart filebeat
+
+====================================================================
+13. IMPORTANT COMMANDS
+====================================================================
+
+Status
+
+systemctl status filebeat
+
+Restart
+
+systemctl restart filebeat
+
+Logs
+
+journalctl -u filebeat
+
+Configuration Test
+
+filebeat test config
+
+Output Test
+
+filebeat test output
+
+====================================================================
+14. FILEBEAT vs LOGSTASH
+====================================================================
+
+FILEBEAT
+
+Collects Logs
+
+Very Lightweight
+
+Written in Go
+
+Low Memory
+
+No Complex Parsing
+
+Can Send Directly
+
+LOGSTASH
+
+Heavy
+
+Written in Java
+
+High Memory
+
+Parsing
+
+Filtering
+
+Transformation
+
+Routing
+
+====================================================================
+15. FILE ROTATION
+====================================================================
+
+Filebeat automatically detects
+
+Log Rotation
+
+Example
+
+messages
+
+↓
+
+messages.1
+
+↓
+
+messages.2
+
+No duplicate reading.
+
+====================================================================
+16. BACKPRESSURE
+====================================================================
+
+If Elasticsearch or Logstash is slow,
+
+Filebeat slows down sending.
+
+Prevents overload.
+
+====================================================================
+17. INTERVIEW QUESTIONS
+====================================================================
+
+Q. What is Filebeat?
+
+Lightweight Log Shipper.
+
+----------------------------------------------------
+
+Q. What is Harvester?
+
+Reads one log file.
+
+One Harvester
+
+↓
+
+One File.
+
+----------------------------------------------------
+
+Q. What is Registry?
+
+Stores reading position.
+
+Avoid duplicate reading.
+
+----------------------------------------------------
+
+Q. What is Offset?
+
+Current byte position.
+
+----------------------------------------------------
+
+Q. What is Filestream?
+
+Modern replacement of old "log" input.
+
+----------------------------------------------------
+
+Q. Difference between Filebeat and Logstash?
+
+Filebeat
+
+Collect
+
+Ship
+
+Lightweight
+
+Logstash
+
+Parse
+
+Transform
+
+Heavy
+
+----------------------------------------------------
+
+Q. Can Filebeat send directly to Elasticsearch?
+
+YES
+
+----------------------------------------------------
+
+Q. Can Filebeat send to Logstash?
+
+YES
+
+----------------------------------------------------
+
+Q. Which port is used for Logstash Beats?
+
+5044
+
+----------------------------------------------------
+
+Q. Why Modules?
+
+Ready-made parsing.
+
+Ready-made dashboards.
+
+----------------------------------------------------
+
+Q. Why Processors?
+
+Modify events before sending.
+
+====================================================================
+18. QUICK REVISION
+====================================================================
+
+Filebeat
+
+↓
+
+Lightweight Log Shipper
+
+Architecture
+
+Log
+
+↓
+
+Harvester
+
+↓
+
+Input
+
+↓
+
+Processors
+
+↓
+
+Output
+
+↓
+
+Logstash
+
+Important Concepts
+
+Harvester
+
+Registry
+
+Offset
+
+Modules
+
+Processors
+
+Multiline
+
+Commands
+
+systemctl status filebeat
+
+journalctl -u filebeat
+
+filebeat test config
+
+filebeat test output
+
+Important File
+
+/etc/filebeat/filebeat.yml
+
+Interview Keywords
+
+Harvester
+
+Registry
+
+Offset
+
+Filestream
+
+Modules
+
+Processors
+
+Backpressure
+
+Multiline
+
+END
