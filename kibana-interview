@@ -1,0 +1,689 @@
+====================================================================
+                06-KIBANA-INTERVIEW.txt
+====================================================================
+
+Author : Anurag
+
+Purpose : Linux Engineer / DevOps Interview Revision
+
+====================================================================
+1. WHAT IS KIBANA?
+====================================================================
+
+Kibana is the visualization tool of Elastic Stack.
+
+It works on top of Elasticsearch.
+
+Kibana never stores logs.
+
+It reads data from Elasticsearch and displays it.
+
+Examples
+
+Dashboard
+
+Visualization
+
+Search
+
+Monitoring
+
+Analytics
+
+====================================================================
+2. KIBANA ARCHITECTURE
+====================================================================
+
+Application
+
+↓
+
+Filebeat
+
+↓
+
+Logstash
+
+↓
+
+Elasticsearch
+
+↓
+
+Kibana
+
+====================================================================
+3. KIBANA FEATURES
+====================================================================
+
+Discover
+
+Dashboard
+
+Lens
+
+Maps
+
+Canvas
+
+Machine Learning
+
+Alerts
+
+Dev Tools
+
+Monitoring
+
+Security
+
+====================================================================
+4. DISCOVER
+====================================================================
+
+Purpose
+
+Search Logs
+
+Filter Logs
+
+View Raw Documents
+
+Useful for
+
+Troubleshooting
+
+Searching
+
+Filtering
+
+Production Debugging
+
+====================================================================
+5. DATA VIEW
+====================================================================
+
+Old Name
+
+Index Pattern
+
+New Name
+
+Data View
+
+Purpose
+
+Connect Kibana
+
+↓
+
+Elasticsearch Index
+
+Example
+
+linux-logs-*
+
+apache-logs-*
+
+system-logs-*
+
+====================================================================
+6. VISUALIZATION
+====================================================================
+
+Purpose
+
+Convert data into graphs.
+
+Examples
+
+Bar Chart
+
+Pie Chart
+
+Line Chart
+
+Area Chart
+
+Table
+
+Gauge
+
+Metric
+
+Heat Map
+
+====================================================================
+7. LENS
+====================================================================
+
+Modern Visualization Builder.
+
+Drag and Drop Interface.
+
+Most commonly used.
+
+No coding required.
+
+====================================================================
+8. DASHBOARD
+====================================================================
+
+Dashboard
+
+Collection of multiple visualizations.
+
+Example
+
+Top IP
+
++
+
+Top URL
+
++
+
+Log Count
+
++
+
+Timeline
+
++
+
+Error Count
+
+All in one screen.
+
+====================================================================
+9. SAVED OBJECTS
+====================================================================
+
+Stores
+
+Dashboards
+
+Visualizations
+
+Searches
+
+Maps
+
+Lens Objects
+
+Useful for
+
+Backup
+
+Migration
+
+Export
+
+Import
+
+====================================================================
+10. DEV TOOLS
+====================================================================
+
+Built-in Elasticsearch Console.
+
+Useful for
+
+REST API
+
+Testing
+
+Queries
+
+Example
+
+GET /_cluster/health
+
+GET /_cat/indices?v
+
+GET /_cat/nodes?v
+
+====================================================================
+11. KIBANA MAPS
+====================================================================
+
+Uses GeoIP Data.
+
+Displays
+
+Country
+
+City
+
+Latitude
+
+Longitude
+
+Useful for
+
+Attack Monitoring
+
+Traffic Analysis
+
+Geo Dashboard
+
+====================================================================
+12. ALERTS
+====================================================================
+
+Purpose
+
+Generate Notification
+
+Example
+
+CPU > 90%
+
+↓
+
+Alert
+
+Disk Usage > 95%
+
+↓
+
+Alert
+
+Node Down
+
+↓
+
+Alert
+
+====================================================================
+13. STACK MONITORING
+====================================================================
+
+Monitor
+
+Elasticsearch
+
+Logstash
+
+Kibana
+
+Beats
+
+Displays
+
+CPU
+
+Memory
+
+Heap
+
+Nodes
+
+Index Rate
+
+Search Rate
+
+====================================================================
+14. SPACES
+====================================================================
+
+Purpose
+
+Separate Kibana Workspaces.
+
+Example
+
+Production
+
+Development
+
+Testing
+
+Different Dashboards
+
+Different Users
+
+====================================================================
+15. CANVAS
+====================================================================
+
+Advanced Reporting Tool.
+
+Used for
+
+Management Reports
+
+NOC Screens
+
+Custom Dashboards
+
+====================================================================
+16. IMPORTANT PORT
+====================================================================
+
+5601
+
+Default Kibana Port
+
+====================================================================
+17. IMPORTANT CONFIGURATION
+====================================================================
+
+Configuration File
+
+/etc/kibana/kibana.yml
+
+Common Parameters
+
+server.port
+
+5601
+
+server.host
+
+0.0.0.0
+
+elasticsearch.hosts
+
+http://localhost:9200
+
+====================================================================
+18. IMPORTANT COMMANDS
+====================================================================
+
+Status
+
+systemctl status kibana
+
+Restart
+
+systemctl restart kibana
+
+Logs
+
+journalctl -u kibana
+
+Configuration
+
+cat /etc/kibana/kibana.yml
+
+====================================================================
+19. COMMON DASHBOARDS
+====================================================================
+
+Linux Logs Dashboard
+
+Apache Dashboard
+
+Nginx Dashboard
+
+System Monitoring
+
+Authentication Logs
+
+Security Events
+
+Application Logs
+
+====================================================================
+20. INTERVIEW QUESTIONS
+====================================================================
+
+Q. What is Kibana?
+
+Visualization Tool.
+
+Works on Elasticsearch.
+
+----------------------------------------------------
+
+Q. Does Kibana store logs?
+
+NO
+
+Elasticsearch stores logs.
+
+----------------------------------------------------
+
+Q. What is Discover?
+
+Search and explore logs.
+
+----------------------------------------------------
+
+Q. What is Data View?
+
+Connection between Kibana and Elasticsearch Index.
+
+Old Name
+
+Index Pattern
+
+----------------------------------------------------
+
+Q. What is Dashboard?
+
+Collection of multiple visualizations.
+
+----------------------------------------------------
+
+Q. What is Lens?
+
+Drag-and-drop visualization builder.
+
+----------------------------------------------------
+
+Q. What is Saved Object?
+
+Stores
+
+Dashboard
+
+Visualization
+
+Search
+
+Maps
+
+Lens
+
+----------------------------------------------------
+
+Q. What is Dev Tools?
+
+Built-in Elasticsearch REST Console.
+
+----------------------------------------------------
+
+Q. What is Stack Monitoring?
+
+Monitor
+
+Elasticsearch
+
+Logstash
+
+Kibana
+
+Beats
+
+----------------------------------------------------
+
+Q. What is Canvas?
+
+Advanced Reporting Dashboard.
+
+----------------------------------------------------
+
+Q. Which port does Kibana use?
+
+5601
+
+----------------------------------------------------
+
+Q. Which file stores Kibana configuration?
+
+/etc/kibana/kibana.yml
+
+----------------------------------------------------
+
+Q. What is Space?
+
+Separate Kibana Workspace.
+
+Useful for
+
+Production
+
+Testing
+
+Development
+
+====================================================================
+21. TROUBLESHOOTING
+====================================================================
+
+Problem
+
+Kibana Not Opening
+
+Check
+
+systemctl status kibana
+
+journalctl -u kibana
+
+Port
+
+5601
+
+----------------------------------------------------
+
+Problem
+
+No Data
+
+Check
+
+Data View
+
+Elasticsearch
+
+Index
+
+Time Filter
+
+----------------------------------------------------
+
+Problem
+
+Dashboard Empty
+
+Check
+
+Time Range
+
+Index
+
+Data View
+
+Filebeat
+
+Logstash
+
+Elasticsearch
+
+====================================================================
+22. QUICK REVISION
+====================================================================
+
+Kibana
+
+↓
+
+Visualization Tool
+
+↓
+
+Works on Elasticsearch
+
+↓
+
+Never Stores Logs
+
+Port
+
+5601
+
+Main Features
+
+Discover
+
+Lens
+
+Dashboard
+
+Maps
+
+Canvas
+
+Alerts
+
+Monitoring
+
+Data View
+
+Old Name
+
+Index Pattern
+
+Configuration
+
+/etc/kibana/kibana.yml
+
+Commands
+
+systemctl status kibana
+
+systemctl restart kibana
+
+journalctl -u kibana
+
+Dev Tools
+
+REST API Console
+
+Dashboard
+
+Multiple Visualizations
+
+Discover
+
+Search Logs
+
+Lens
+
+Drag & Drop Visualization
+
+Interview Keywords
+
+Discover
+
+Dashboard
+
+Lens
+
+Data View
+
+Saved Objects
+
+Canvas
+
+Maps
+
+Alerts
+
+Stack Monitoring
+
+Spaces
+
+END
