@@ -1,0 +1,499 @@
+====================================================================
+             07-ELK-TROUBLESHOOTING.txt
+====================================================================
+
+Author : Anurag
+
+Purpose : Production Troubleshooting + Interview
+
+====================================================================
+1. ELASTICSEARCH NOT STARTING
+====================================================================
+
+Symptoms
+
+systemctl status elasticsearch
+
+FAILED
+
+Check
+
+journalctl -u elasticsearch
+
+Reason
+
+Wrong Configuration
+
+Permission
+
+Heap
+
+Disk
+
+Fix
+
+journalctl
+
+Check elasticsearch.yml
+
+Check JVM
+
+Check Permission
+
+====================================================================
+2. PORT 9200 NOT LISTENING
+====================================================================
+
+Symptoms
+
+curl localhost:9200
+
+Connection Refused
+
+Check
+
+ss -lntp | grep 9200
+
+Reason
+
+Service Down
+
+Configuration Error
+
+====================================================================
+3. PORT 9300 NOT LISTENING
+====================================================================
+
+Reason
+
+Cluster not started
+
+Node failed
+
+Wrong transport.port
+
+====================================================================
+4. KIBANA NOT OPENING
+====================================================================
+
+Symptoms
+
+Browser
+
+Unable to connect
+
+Check
+
+systemctl status kibana
+
+journalctl -u kibana
+
+ss -lntp | grep 5601
+
+====================================================================
+5. KIBANA NO DATA
+====================================================================
+
+Check
+
+Data View
+
+Index
+
+Time Filter
+
+Discover
+
+Elasticsearch
+
+====================================================================
+6. LOGSTASH NOT STARTING
+====================================================================
+
+Check
+
+systemctl status logstash
+
+journalctl -u logstash
+
+Reason
+
+Syntax Error
+
+Pipeline Error
+
+Port Busy
+
+====================================================================
+7. PIPELINE ERROR
+====================================================================
+
+Check
+
+logstash -t
+
+Reason
+
+Syntax Error
+
+Missing }
+
+Missing "
+
+Wrong Plugin
+
+====================================================================
+8. FILEBEAT NOT STARTING
+====================================================================
+
+Check
+
+systemctl status filebeat
+
+journalctl -u filebeat
+
+filebeat test config
+
+====================================================================
+9. FILEBEAT NOT SENDING LOGS
+====================================================================
+
+Check
+
+Output
+
+Logstash
+
+Port
+
+5044
+
+Firewall
+
+Registry
+
+====================================================================
+10. INDEX NOT CREATED
+====================================================================
+
+Check
+
+curl localhost:9200/_cat/indices?v
+
+Reason
+
+Logstash Output
+
+Permission
+
+Pipeline
+
+====================================================================
+11. CLUSTER YELLOW
+====================================================================
+
+Reason
+
+Replica Missing
+
+Mostly Single Node
+
+Fix
+
+Add Node
+
+OR
+
+Replica = 0
+
+====================================================================
+12. CLUSTER RED
+====================================================================
+
+Reason
+
+Primary Missing
+
+Disk Failure
+
+Node Failure
+
+Data Corruption
+
+====================================================================
+13. FILEBEAT OUTPUT ERROR
+====================================================================
+
+Check
+
+filebeat test output
+
+Verify
+
+Logstash
+
+Elasticsearch
+
+====================================================================
+14. GROK PARSE FAILURE
+====================================================================
+
+Reason
+
+Wrong Pattern
+
+Check
+
+Original Log
+
+Then Pattern
+
+====================================================================
+15. PERMISSION DENIED
+====================================================================
+
+Reason
+
+Ownership
+
+SELinux
+
+Permission
+
+Fix
+
+chown
+
+chmod
+
+====================================================================
+16. JVM HEAP ERROR
+====================================================================
+
+Reason
+
+Less Memory
+
+Wrong Heap
+
+Fix
+
+Edit
+
+jvm.options
+
+====================================================================
+17. DISK FULL
+====================================================================
+
+Symptoms
+
+Read Only
+
+Index Failure
+
+Check
+
+df -h
+
+du -sh
+
+====================================================================
+18. TOO MANY SHARDS
+====================================================================
+
+Symptoms
+
+Slow Cluster
+
+High Heap
+
+Fix
+
+Reduce Shards
+
+Use ILM
+
+====================================================================
+19. HIGH CPU
+====================================================================
+
+Check
+
+top
+
+htop
+
+Elasticsearch Hot Threads
+
+====================================================================
+20. HIGH MEMORY
+====================================================================
+
+Check
+
+Heap
+
+Cache
+
+Node Stats
+
+====================================================================
+21. AUTHENTICATION ERROR
+====================================================================
+
+Reason
+
+Security Enabled
+
+Wrong Password
+
+SSL
+
+====================================================================
+22. SSL ERROR
+====================================================================
+
+Reason
+
+Certificate
+
+Keystore
+
+Truststore
+
+====================================================================
+23. LOGSTASH PORT BUSY
+====================================================================
+
+Check
+
+ss -lntp | grep 5044
+
+Fix
+
+Kill Old Process
+
+====================================================================
+24. FILE ROTATION ISSUE
+====================================================================
+
+Check
+
+Registry
+
+Harvester
+
+Offset
+
+====================================================================
+25. IMPORTANT COMMANDS
+====================================================================
+
+systemctl status
+
+journalctl -u
+
+curl localhost:9200
+
+curl _cluster/health
+
+curl _cat/indices?v
+
+ss -lntp
+
+filebeat test config
+
+filebeat test output
+
+logstash -t
+
+====================================================================
+REAL ERRORS WE FACED
+====================================================================
+
+✔ Unable to create logs dir
+
+✔ gc.log Permission denied
+
+✔ xpack.security.transport.ssl
+
+✔ Missing authentication credentials
+
+✔ Filebeat no outputs defined
+
+✔ Logstash placeholder error
+
+linux-logs-%{YYYY.MM.dd}
+
+Correct
+
+linux-logs-%{+YYYY.MM.dd}
+
+✔ Yellow Cluster
+
+Reason
+
+Replica Missing
+
+====================================================================
+PRODUCTION TROUBLESHOOTING ORDER
+====================================================================
+
+Application
+
+↓
+
+Log File
+
+↓
+
+Filebeat
+
+↓
+
+Logstash
+
+↓
+
+Elasticsearch
+
+↓
+
+Kibana
+
+Never Guess.
+
+Check Every Layer.
+
+====================================================================
+INTERVIEW TIP
+====================================================================
+
+Production Engineers never guess.
+
+Always collect evidence.
+
+systemctl
+
+↓
+
+journalctl
+
+↓
+
+Configuration
+
+↓
+
+Port
+
+↓
+
+Logs
+
+↓
+
+API
+
+END
