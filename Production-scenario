@@ -1,0 +1,766 @@
+====================================================================
+            08-30-PRODUCTION-SCENARIOS.txt
+====================================================================
+
+Author : Anurag
+
+Purpose
+
+Real Production ELK Troubleshooting
+
+====================================================================
+SCENARIO 1
+====================================================================
+
+Problem
+
+Elasticsearch Service Down
+
+Impact
+
+No Logs Indexed
+
+Approach
+
+systemctl status elasticsearch
+
+↓
+
+journalctl -u elasticsearch
+
+↓
+
+Check Config
+
+↓
+
+Restart
+
+====================================================================
+SCENARIO 2
+====================================================================
+
+Problem
+
+Kibana Down
+
+Impact
+
+Users cannot access Dashboard
+
+Check
+
+5601
+
+systemctl
+
+journalctl
+
+====================================================================
+SCENARIO 3
+====================================================================
+
+Problem
+
+Logstash Down
+
+Impact
+
+Logs stop reaching Elasticsearch
+
+Check
+
+5044
+
+Pipeline
+
+systemctl
+
+journalctl
+
+====================================================================
+SCENARIO 4
+====================================================================
+
+Problem
+
+Filebeat Down
+
+Impact
+
+No logs collected
+
+Check
+
+systemctl
+
+filebeat test config
+
+journalctl
+
+====================================================================
+SCENARIO 5
+====================================================================
+
+Problem
+
+Yellow Cluster
+
+Reason
+
+Replica Missing
+
+Fix
+
+Add Node
+
+OR
+
+Replica = 0
+
+====================================================================
+SCENARIO 6
+====================================================================
+
+Problem
+
+Red Cluster
+
+Reason
+
+Primary Shard Missing
+
+Impact
+
+Data unavailable
+
+====================================================================
+SCENARIO 7
+====================================================================
+
+Problem
+
+Disk Full
+
+Symptoms
+
+Read Only Index
+
+Index Failure
+
+Check
+
+df -h
+
+du -sh
+
+====================================================================
+SCENARIO 8
+====================================================================
+
+Problem
+
+Heap Full
+
+Symptoms
+
+Slow Search
+
+GC
+
+OutOfMemory
+
+Fix
+
+Increase Heap
+
+Reduce Shards
+
+====================================================================
+SCENARIO 9
+====================================================================
+
+Problem
+
+Too Many Shards
+
+Symptoms
+
+High Heap
+
+Slow Cluster
+
+Fix
+
+Reduce Shards
+
+Use ILM
+
+====================================================================
+SCENARIO 10
+====================================================================
+
+Problem
+
+Index Not Created
+
+Check
+
+Logstash Output
+
+Elasticsearch
+
+Pipeline
+
+====================================================================
+SCENARIO 11
+====================================================================
+
+Problem
+
+No Logs in Kibana
+
+Check
+
+Time Filter
+
+Data View
+
+Index
+
+Discover
+
+====================================================================
+SCENARIO 12
+====================================================================
+
+Problem
+
+Connection Refused
+
+Check
+
+9200
+
+5044
+
+5601
+
+Firewall
+
+Service
+
+====================================================================
+SCENARIO 13
+====================================================================
+
+Problem
+
+Authentication Error
+
+Reason
+
+Security Enabled
+
+Password Wrong
+
+SSL
+
+====================================================================
+SCENARIO 14
+====================================================================
+
+Problem
+
+SSL Certificate Expired
+
+Symptoms
+
+HTTPS Failure
+
+Fix
+
+Renew Certificate
+
+Restart Services
+
+====================================================================
+SCENARIO 15
+====================================================================
+
+Problem
+
+Logstash Grok Failure
+
+Symptoms
+
+_grokparsefailure
+
+Fix
+
+Check Original Log
+
+Correct Grok Pattern
+
+====================================================================
+SCENARIO 16
+====================================================================
+
+Problem
+
+Wrong Date Parsing
+
+Symptoms
+
+Dashboard Timeline Wrong
+
+Fix
+
+Date Filter
+
+@timestamp
+
+====================================================================
+SCENARIO 17
+====================================================================
+
+Problem
+
+High CPU
+
+Check
+
+top
+
+htop
+
+Node Stats
+
+Hot Threads
+
+====================================================================
+SCENARIO 18
+====================================================================
+
+Problem
+
+High Memory
+
+Check
+
+Heap
+
+JVM
+
+Cache
+
+====================================================================
+SCENARIO 19
+====================================================================
+
+Problem
+
+Log Rotation
+
+Symptoms
+
+Duplicate Logs
+
+Missing Logs
+
+Fix
+
+Registry
+
+Filestream
+
+====================================================================
+SCENARIO 20
+====================================================================
+
+Problem
+
+Registry Corruption
+
+Symptoms
+
+Duplicate Reading
+
+Fix
+
+Backup Registry
+
+Reset Carefully
+
+Restart Filebeat
+
+====================================================================
+SCENARIO 21
+====================================================================
+
+Problem
+
+Logstash Queue Full
+
+Impact
+
+Slow Processing
+
+Fix
+
+Persistent Queue
+
+Increase Workers
+
+====================================================================
+SCENARIO 22
+====================================================================
+
+Problem
+
+Node Crash
+
+Impact
+
+Replica Promoted
+
+If Replica Exists
+
+Otherwise
+
+Cluster Red
+
+====================================================================
+SCENARIO 23
+====================================================================
+
+Problem
+
+Rolling Restart
+
+Restart One Node
+
+Wait Green
+
+Restart Next
+
+Never Restart Entire Cluster Together
+
+====================================================================
+SCENARIO 24
+====================================================================
+
+Problem
+
+Snapshot Backup
+
+Purpose
+
+Backup Elasticsearch Data
+
+Restore During Disaster
+
+====================================================================
+SCENARIO 25
+====================================================================
+
+Problem
+
+Index Lifecycle
+
+Purpose
+
+Delete Old Logs
+
+Save Disk
+
+Use ILM
+
+====================================================================
+SCENARIO 26
+====================================================================
+
+Problem
+
+Slow Search
+
+Check
+
+Shard Count
+
+Heap
+
+Disk
+
+CPU
+
+Cache
+
+====================================================================
+SCENARIO 27
+====================================================================
+
+Problem
+
+Filebeat Cannot Connect
+
+Check
+
+5044
+
+Firewall
+
+Output
+
+Logstash
+
+====================================================================
+SCENARIO 28
+====================================================================
+
+Problem
+
+Kibana Dashboard Empty
+
+Check
+
+Time Range
+
+Data View
+
+Discover
+
+Index
+
+====================================================================
+SCENARIO 29
+====================================================================
+
+Problem
+
+Elasticsearch Upgrade
+
+Steps
+
+Snapshot
+
+Backup
+
+Rolling Upgrade
+
+Health Check
+
+====================================================================
+SCENARIO 30
+====================================================================
+
+Problem
+
+Production Troubleshooting
+
+Golden Rule
+
+Application
+
+↓
+
+Log File
+
+↓
+
+Filebeat
+
+↓
+
+Logstash
+
+↓
+
+Elasticsearch
+
+↓
+
+Kibana
+
+Never Jump Directly to Kibana.
+
+Always Troubleshoot Layer by Layer.
+
+====================================================================
+INTERVIEW SCENARIOS
+====================================================================
+
+Q1
+
+User says Dashboard Empty.
+
+Where will you start?
+
+Answer
+
+Discover
+
+↓
+
+Index
+
+↓
+
+Elasticsearch
+
+↓
+
+Logstash
+
+↓
+
+Filebeat
+
+------------------------------------------------------
+
+Q2
+
+Yellow Cluster?
+
+Replica Missing.
+
+------------------------------------------------------
+
+Q3
+
+Red Cluster?
+
+Primary Missing.
+
+------------------------------------------------------
+
+Q4
+
+Filebeat Running
+
+Logstash Running
+
+Still No Logs
+
+Check
+
+Pipeline
+
+Output
+
+Index
+
+------------------------------------------------------
+
+Q5
+
+Kibana Accessible
+
+No Dashboard
+
+Check
+
+Data View
+
+Time Filter
+
+Discover
+
+------------------------------------------------------
+
+Q6
+
+Elasticsearch Not Starting
+
+Check
+
+systemctl
+
+↓
+
+journalctl
+
+↓
+
+Configuration
+
+↓
+
+Heap
+
+↓
+
+Disk
+
+------------------------------------------------------
+
+Q7
+
+Logstash Pipeline Failed
+
+Run
+
+logstash -t
+
+------------------------------------------------------
+
+Q8
+
+Filebeat Config Error
+
+Run
+
+filebeat test config
+
+------------------------------------------------------
+
+Q9
+
+No Connection
+
+Check
+
+ss -lntp
+
+Ports
+
+9200
+
+5044
+
+5601
+
+------------------------------------------------------
+
+Q10
+
+Production Rule
+
+Never Guess.
+
+Collect Evidence.
+
+systemctl
+
+↓
+
+journalctl
+
+↓
+
+Configuration
+
+↓
+
+Port
+
+↓
+
+API
+
+↓
+
+Logs
+
+====================================================================
+END
