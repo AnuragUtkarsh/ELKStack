@@ -1,0 +1,930 @@
+====================================================================
+                    ELK STACK NOTES (Production Oriented)
+====================================================================
+
+Author  : Anurag
+Purpose : Linux Engineer Interview + Production Revision
+Platform: Ubuntu 24.04 LTS
+
+====================================================================
+1. WHAT IS ELK ?
+====================================================================
+
+ELK = Elasticsearch + Logstash + Kibana
+
+E = Elasticsearch
+L = Logstash
+K = Kibana
+
+Aajkal Elastic Stack me Filebeat bhi use hota hai.
+
+Architecture
+
+Linux Logs
+      |
+      |
+   Filebeat
+      |
+      |
+   Logstash
+      |
+      |
+ Elasticsearch
+      |
+      |
+    Kibana
+
+====================================================================
+2. COMPONENTS
+====================================================================
+
+----------------------------------------------------
+Elasticsearch
+----------------------------------------------------
+
+Purpose
+-------
+
+Search Engine + NoSQL Database
+
+Stores logs in JSON format.
+
+Features
+
+- Indexing
+- Fast Searching
+- Aggregation
+- Analytics
+
+Ports
+
+9200
+
+REST API
+
+Example
+
+curl http://localhost:9200
+
+
+9300
+
+Used for
+
+Node-to-Node Communication
+
+Only Elasticsearch Cluster uses 9300.
+
+Client never communicates on 9300.
+
+----------------------------------------------------
+Kibana
+----------------------------------------------------
+
+Purpose
+
+Visualization Tool
+
+Works on top of Elasticsearch.
+
+Uses Elasticsearch REST API.
+
+Default Port
+
+5601
+
+Access
+
+http://Server-IP:5601
+
+Kibana never stores logs.
+
+Kibana only reads data from Elasticsearch.
+
+----------------------------------------------------
+Logstash
+----------------------------------------------------
+
+Purpose
+
+Data Processing Pipeline
+
+Input
+↓
+
+Filter
+↓
+
+Output
+
+Responsible for
+
+Collect
+Parse
+Transform
+Filter
+
+Default Beats Port
+
+5044
+
+----------------------------------------------------
+Filebeat
+----------------------------------------------------
+
+Purpose
+
+Lightweight Log Collector
+
+Reads logs continuously.
+
+Sends logs to Logstash or Elasticsearch.
+
+Very low memory usage.
+
+Acts as Client.
+
+====================================================================
+3. COMPLETE DATA FLOW
+====================================================================
+
+Linux Log
+
+↓
+
+Filebeat
+
+↓
+
+Logstash
+
+↓
+
+Elasticsearch
+
+↓
+
+Kibana
+
+====================================================================
+4. INSTALLATION FLOW
+====================================================================
+
+1. Add Elastic GPG Key
+
+2. Add Elastic Repository
+
+Repository Location
+
+/etc/apt/sources.list.d/
+
+3. apt update
+
+4. apt install
+
+Example
+
+elasticsearch
+
+logstash
+
+kibana
+
+filebeat
+
+====================================================================
+5. WHY GPG KEY ?
+====================================================================
+
+Purpose
+
+Verify package authenticity.
+
+Ensures package is signed by Elastic.
+
+Prevents tampered packages.
+
+====================================================================
+6. HOW APT KNOWS WHICH REPOSITORY TO USE ?
+====================================================================
+
+APT checks every repository present in
+
+/etc/apt/sources.list
+
+and
+
+/etc/apt/sources.list.d/
+
+Every repository contains package metadata.
+
+When user installs package
+
+Example
+
+apt install elasticsearch
+
+APT searches package name in all configured repositories.
+
+If package exists only in Elastic repository,
+
+APT downloads package from Elastic repository.
+
+====================================================================
+7. apt update vs apt upgrade
+====================================================================
+
+apt update
+
+Downloads latest package metadata.
+
+Does NOT install packages.
+
+apt upgrade
+
+Downloads and installs latest package versions.
+
+====================================================================
+8. IMPORTANT CONFIGURATION FILES
+====================================================================
+
+Elasticsearch
+
+/etc/elasticsearch/elasticsearch.yml
+
+JVM
+
+/etc/elasticsearch/jvm.options
+
+Kibana
+
+/etc/kibana/kibana.yml
+
+Logstash
+
+/etc/logstash/logstash.yml
+
+Pipeline
+
+/etc/logstash/conf.d/
+
+Filebeat
+
+/etc/filebeat/filebeat.yml
+
+====================================================================
+9. ELASTICSEARCH CONFIGURATION
+====================================================================
+
+Example
+
+cluster.name: elk-cluster
+
+node.name: node1
+
+network.host: 0.0.0.0
+
+http.port: 9200
+
+discovery.type: single-node
+
+----------------------------------------------------
+
+cluster.name
+
+Logical Cluster Name
+
+----------------------------------------------------
+
+node.name
+
+Logical Elasticsearch Node Name
+
+Different from Linux Hostname.
+
+----------------------------------------------------
+
+network.host
+
+127.0.0.1
+
+Listen only locally.
+
+0.0.0.0
+
+Listen on every interface.
+
+----------------------------------------------------
+
+http.port
+
+9200
+
+REST API
+
+----------------------------------------------------
+
+transport.port
+
+9300
+
+Internal Cluster Communication
+
+----------------------------------------------------
+
+discovery.type
+
+single-node
+
+Single Node Cluster
+
+Multi Node
+
+Uses
+
+discovery.seed_hosts
+
+cluster.initial_master_nodes
+
+====================================================================
+10. JVM HEAP
+====================================================================
+
+Purpose
+
+Control Java Memory.
+
+Configured inside
+
+jvm.options
+
+Example
+
+-Xms1g
+
+-Xmx1g
+
+Always keep both equal.
+
+====================================================================
+11. LOGSTASH PIPELINE
+====================================================================
+
+Pipeline
+
+Input
+
+↓
+
+Filter
+
+↓
+
+Output
+
+Example
+
+Input
+
+Beats
+
+Port
+
+5044
+
+Output
+
+Elasticsearch
+
+Index
+
+linux-logs-%{+YYYY.MM.dd}
+
+====================================================================
+12. FILEBEAT
+====================================================================
+
+Reads logs continuously.
+
+Example
+
+paths
+
+/var/log/auth.log
+
+/var/log/syslog
+
+After reading logs
+
+↓
+
+Sends to Logstash
+
+====================================================================
+13. GROK FILTER
+====================================================================
+
+Purpose
+
+Extract structured fields from raw logs.
+
+Raw Log
+
+↓
+
+Structured JSON
+
+Example
+
+Extract
+
+Timestamp
+
+Username
+
+IP
+
+Hostname
+
+Service
+
+PID
+
+Port
+
+Golden Rule
+
+Always observe log first.
+
+Then write Grok Pattern.
+
+Never memorize blindly.
+
+====================================================================
+14. MUTATE FILTER
+====================================================================
+
+Purpose
+
+Modify parsed fields.
+
+Common Operations
+
+lowercase
+
+uppercase
+
+convert
+
+rename
+
+replace
+
+remove_field
+
+add_field
+
+Example
+
+Convert
+
+port
+
+String
+
+↓
+
+Integer
+
+====================================================================
+15. DATE FILTER
+====================================================================
+
+Purpose
+
+Convert timestamp string
+
+↓
+
+Actual Date
+
+Uses
+
+@timestamp
+
+Very important for Kibana Timeline.
+
+====================================================================
+16. DROP FILTER
+====================================================================
+
+Purpose
+
+Drop unwanted logs.
+
+Example
+
+Drop DEBUG logs.
+
+Saves storage.
+
+====================================================================
+17. CONDITIONALS
+====================================================================
+
+if
+
+else
+
+Used for
+
+Different processing
+
+Example
+
+ERROR
+
+↓
+
+High Priority
+
+INFO
+
+↓
+
+Normal Priority
+
+====================================================================
+18. GEOIP FILTER
+====================================================================
+
+Purpose
+
+Convert IP
+
+↓
+
+Country
+
+City
+
+Latitude
+
+Longitude
+
+Timezone
+
+Uses MaxMind Database.
+
+Useful for Kibana Maps.
+
+====================================================================
+19. IMPORTANT PORTS
+====================================================================
+
+Elasticsearch
+
+9200
+
+REST API
+
+9300
+
+Cluster Communication
+
+Logstash
+
+5044
+
+Beats Input
+
+Kibana
+
+5601
+
+Web Interface
+
+====================================================================
+20. TROUBLESHOOTING COMMANDS
+====================================================================
+
+Service Status
+
+systemctl status elasticsearch
+
+systemctl status kibana
+
+systemctl status logstash
+
+systemctl status filebeat
+
+Logs
+
+journalctl -u elasticsearch
+
+journalctl -u kibana
+
+journalctl -u logstash
+
+journalctl -u filebeat
+
+Restart
+
+systemctl restart elasticsearch
+
+systemctl restart kibana
+
+systemctl restart logstash
+
+systemctl restart filebeat
+
+Configuration Test
+
+filebeat test config
+
+Logstash Config Test
+
+/usr/share/logstash/bin/logstash --path.settings /etc/logstash -t
+
+====================================================================
+21. IMPORTANT API
+====================================================================
+
+Cluster Health
+
+GET
+
+/_cluster/health
+
+Indices
+
+/_cat/indices?v
+
+Nodes
+
+/_cat/nodes?v
+
+====================================================================
+22. KIBANA
+====================================================================
+
+Data View
+
+↓
+
+Discover
+
+↓
+
+Visualization
+
+↓
+
+Dashboard
+
+Kibana never stores logs.
+
+Everything comes from Elasticsearch.
+
+====================================================================
+23. PRODUCTION DATA FLOW
+====================================================================
+
+Application
+
+↓
+
+Log File
+
+↓
+
+Filebeat
+
+↓
+
+Logstash
+
+↓
+
+Elasticsearch
+
+↓
+
+Kibana
+
+↓
+
+Dashboard
+
+====================================================================
+24. INTERVIEW QUESTIONS
+====================================================================
+
+Q. Difference between Elasticsearch and Kibana?
+
+Elasticsearch stores and searches data.
+
+Kibana visualizes Elasticsearch data.
+
+----------------------------------------------------
+
+Q. Difference between Filebeat and Logstash?
+
+Filebeat
+
+Collects Logs
+
+Lightweight
+
+Low Memory
+
+Logstash
+
+Processes Logs
+
+Heavy
+
+Filtering
+
+Parsing
+
+Transformation
+
+----------------------------------------------------
+
+Q. Difference between 9200 and 9300?
+
+9200
+
+REST API
+
+Client Communication
+
+9300
+
+Node Communication
+
+Cluster Internal Traffic
+
+----------------------------------------------------
+
+Q. Why JVM Heap?
+
+To control Java memory usage.
+
+----------------------------------------------------
+
+Q. Why Grok?
+
+Convert raw logs into structured fields.
+
+----------------------------------------------------
+
+Q. Why Mutate?
+
+Modify parsed fields.
+
+----------------------------------------------------
+
+Q. Why Date Filter?
+
+Convert timestamp into searchable date.
+
+----------------------------------------------------
+
+Q. Why GeoIP?
+
+Generate Country, City and Coordinates from IP.
+
+====================================================================
+25. QUICK REVISION SHEET
+====================================================================
+
+ELK
+
+Elasticsearch
+Logstash
+Kibana
+
+Data Flow
+
+Filebeat
+↓
+
+Logstash
+↓
+
+Elasticsearch
+↓
+
+Kibana
+
+Ports
+
+9200 → Elasticsearch REST API
+
+9300 → Elasticsearch Cluster Communication
+
+5044 → Logstash Beats Input
+
+5601 → Kibana
+
+Important Files
+
+/etc/elasticsearch/elasticsearch.yml
+
+/etc/logstash/conf.d/
+
+/etc/filebeat/filebeat.yml
+
+/etc/kibana/kibana.yml
+
+Pipeline
+
+Input
+
+↓
+
+Filter
+
+↓
+
+Output
+
+Filters
+
+Grok
+
+Mutate
+
+Date
+
+Drop
+
+GeoIP
+
+Conditionals
+
+Commands
+
+systemctl status
+
+journalctl -u
+
+curl localhost:9200
+
+curl localhost:9200/_cluster/health
+
+curl localhost:9200/_cat/indices?v
+
+Interview Keywords
+
+Index
+
+Document
+
+Cluster
+
+Node
+
+Pipeline
+
+Grok
+
+Mutate
+
+Heap
+
+Data View
+
+Discover
+
+Dashboard
+
+GeoIP
+
+Single Node
+
+Filebeat
+
+Production Flow
+
+Application
+
+↓
+
+Filebeat
+
+↓
+
+Logstash
+
+↓
+
+Elasticsearch
+
+↓
+
+Kibana
+
+END
