@@ -1,0 +1,691 @@
+====================================================================
+                04-LOGSTASH-INTERVIEW.txt
+====================================================================
+
+Author : Anurag
+Purpose: Linux Engineer / DevOps Interview Revision
+
+====================================================================
+1. WHAT IS LOGSTASH?
+====================================================================
+
+Logstash is a server-side data processing pipeline.
+
+It collects data from different sources, processes it and sends it
+to different destinations.
+
+Logstash = Collect + Parse + Transform + Forward
+
+====================================================================
+2. DATA FLOW
+====================================================================
+
+Application
+
+↓
+
+Log File
+
+↓
+
+Input Plugin
+
+↓
+
+Filter Plugin
+
+↓
+
+Output Plugin
+
+↓
+
+Destination
+
+====================================================================
+3. PIPELINE
+====================================================================
+
+Every Logstash Pipeline has three stages.
+
+Input
+
+↓
+
+Filter
+
+↓
+
+Output
+
+Example
+
+input {
+
+}
+
+filter {
+
+}
+
+output {
+
+}
+
+====================================================================
+4. INPUT PLUGINS
+====================================================================
+
+Common Input Plugins
+
+beats
+
+tcp
+
+udp
+
+stdin
+
+http
+
+file
+
+exec
+
+jdbc
+
+Most Common
+
+beats
+
+Port
+
+5044
+
+Filebeat
+
+↓
+
+Logstash
+
+====================================================================
+5. FILTER PLUGINS
+====================================================================
+
+Purpose
+
+Parse
+
+Modify
+
+Transform
+
+Clean
+
+Common Filters
+
+grok
+
+mutate
+
+date
+
+geoip
+
+drop
+
+translate
+
+ruby
+
+aggregate
+
+dissect
+
+csv
+
+json
+
+xml
+
+====================================================================
+6. OUTPUT PLUGINS
+====================================================================
+
+Purpose
+
+Send processed logs.
+
+Common Outputs
+
+Elasticsearch
+
+stdout
+
+file
+
+kafka
+
+redis
+
+email
+
+http
+
+Most Common
+
+Elasticsearch
+
+====================================================================
+7. GROK FILTER
+====================================================================
+
+Purpose
+
+Convert raw logs into structured fields.
+
+Raw Log
+
+↓
+
+Structured JSON
+
+Common Patterns
+
+%{IP}
+
+%{USERNAME}
+
+%{HOSTNAME}
+
+%{NUMBER}
+
+%{WORD}
+
+%{DATA}
+
+%{GREEDYDATA}
+
+%{SYSLOGTIMESTAMP}
+
+Golden Rule
+
+Observe log first.
+
+Then write Grok Pattern.
+
+Never memorize blindly.
+
+====================================================================
+8. MUTATE FILTER
+====================================================================
+
+Purpose
+
+Modify extracted fields.
+
+Operations
+
+lowercase
+
+uppercase
+
+rename
+
+replace
+
+convert
+
+remove_field
+
+add_field
+
+split
+
+join
+
+Examples
+
+String
+
+↓
+
+Integer
+
+Uppercase
+
+↓
+
+Lowercase
+
+Rename Fields
+
+Delete Fields
+
+====================================================================
+9. DATE FILTER
+====================================================================
+
+Purpose
+
+Convert String
+
+↓
+
+Date
+
+Mostly targets
+
+@timestamp
+
+Useful for
+
+Timeline
+
+Dashboard
+
+Discover
+
+====================================================================
+10. GEOIP FILTER
+====================================================================
+
+Purpose
+
+Convert IP
+
+↓
+
+Country
+
+City
+
+Latitude
+
+Longitude
+
+Timezone
+
+Uses
+
+MaxMind Database
+
+Useful for
+
+Maps
+
+Geo Dashboard
+
+====================================================================
+11. DROP FILTER
+====================================================================
+
+Purpose
+
+Discard unwanted logs.
+
+Example
+
+Drop DEBUG Logs.
+
+Saves Storage.
+
+====================================================================
+12. CONDITIONALS
+====================================================================
+
+if
+
+else
+
+elseif
+
+Example
+
+if ERROR
+
+↓
+
+High Priority
+
+if INFO
+
+↓
+
+Normal Priority
+
+====================================================================
+13. DISSECT FILTER
+====================================================================
+
+Alternative to Grok.
+
+Much Faster.
+
+Works only when log format is fixed.
+
+Grok
+
+Regex Based
+
+Flexible
+
+Slower
+
+Dissect
+
+Delimiter Based
+
+Very Fast
+
+====================================================================
+14. PIPELINE WORKERS
+====================================================================
+
+Setting
+
+pipeline.workers
+
+Purpose
+
+Parallel Processing.
+
+Default
+
+CPU Core Count.
+
+====================================================================
+15. PERSISTENT QUEUE
+====================================================================
+
+Purpose
+
+Avoid Data Loss.
+
+If Elasticsearch is Down,
+
+Logs remain inside Queue.
+
+Later
+
+Automatically Sent.
+
+====================================================================
+16. DEAD LETTER QUEUE
+====================================================================
+
+Purpose
+
+Store failed events.
+
+Useful for troubleshooting.
+
+====================================================================
+17. LOGSTASH CONFIGURATION
+====================================================================
+
+Main Config
+
+/etc/logstash/logstash.yml
+
+Pipeline
+
+/etc/logstash/conf.d/
+
+====================================================================
+18. IMPORTANT COMMANDS
+====================================================================
+
+Status
+
+systemctl status logstash
+
+Restart
+
+systemctl restart logstash
+
+Logs
+
+journalctl -u logstash
+
+Configuration Test
+
+/usr/share/logstash/bin/logstash --path.settings /etc/logstash -t
+
+====================================================================
+19. INTERVIEW QUESTIONS
+====================================================================
+
+Q. What is Logstash?
+
+Server side data processing pipeline.
+
+--------------------------------------------------
+
+Q. Pipeline Stages?
+
+Input
+
+Filter
+
+Output
+
+--------------------------------------------------
+
+Q. Difference between Filebeat and Logstash?
+
+Filebeat
+
+Collects Logs
+
+Very Lightweight
+
+Low Memory
+
+No Parsing
+
+Logstash
+
+Heavy
+
+Parsing
+
+Transformation
+
+Filtering
+
+Routing
+
+--------------------------------------------------
+
+Q. Why Grok?
+
+Convert raw logs
+
+↓
+
+Structured fields.
+
+--------------------------------------------------
+
+Q. Why Mutate?
+
+Modify extracted fields.
+
+--------------------------------------------------
+
+Q. Why Date Filter?
+
+Convert timestamp string into date.
+
+--------------------------------------------------
+
+Q. Why GeoIP?
+
+Convert IP into
+
+Country
+
+City
+
+Latitude
+
+Longitude
+
+--------------------------------------------------
+
+Q. Why Drop Filter?
+
+Discard unnecessary logs.
+
+--------------------------------------------------
+
+Q. Difference between Grok and Dissect?
+
+Grok
+
+Regex Based
+
+Flexible
+
+Slow
+
+Dissect
+
+Delimiter Based
+
+Fast
+
+Fixed Log Format
+
+--------------------------------------------------
+
+Q. Which port does Beats use?
+
+5044
+
+--------------------------------------------------
+
+Q. Can Logstash send logs to multiple outputs?
+
+YES
+
+Example
+
+Elasticsearch
+
++
+
+File
+
++
+
+Kafka
+
+at the same time.
+
+--------------------------------------------------
+
+Q. What is Persistent Queue?
+
+Stores events temporarily.
+
+Avoids data loss.
+
+--------------------------------------------------
+
+Q. What is Dead Letter Queue?
+
+Stores failed events.
+
+Useful for troubleshooting.
+
+====================================================================
+20. QUICK REVISION
+====================================================================
+
+Logstash
+
+↓
+
+Collect
+
+↓
+
+Parse
+
+↓
+
+Transform
+
+↓
+
+Forward
+
+Pipeline
+
+Input
+
+↓
+
+Filter
+
+↓
+
+Output
+
+Filters
+
+Grok
+
+Mutate
+
+Date
+
+GeoIP
+
+Drop
+
+Dissect
+
+Port
+
+5044
+
+Important Files
+
+/etc/logstash/logstash.yml
+
+/etc/logstash/conf.d/
+
+Commands
+
+systemctl status logstash
+
+journalctl -u logstash
+
+logstash -t
+
+Interview Keywords
+
+Pipeline
+
+Input
+
+Filter
+
+Output
+
+Grok
+
+Mutate
+
+GeoIP
+
+Persistent Queue
+
+Dead Letter Queue
+
+Dissect
+
+END
