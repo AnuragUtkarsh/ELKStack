@@ -1,0 +1,214 @@
+=========================================================
+             ELK CONFIGURATION FILES
+=========================================================
+
+=========================================================
+ELASTICSEARCH
+=========================================================
+
+Configuration File
+
+/etc/elasticsearch/elasticsearch.yml
+
+Purpose
+
+Main Elasticsearch Configuration
+
+Important Parameters
+
+cluster.name
+
+Logical Cluster Name
+
+Example
+
+cluster.name: elk-cluster
+
+----------------------------------------------------
+
+node.name
+
+Logical Node Name
+
+Example
+
+node.name: node1
+
+----------------------------------------------------
+
+network.host
+
+127.0.0.1
+
+Listen only localhost
+
+0.0.0.0
+
+Listen on every Interface
+
+----------------------------------------------------
+
+http.port
+
+9200
+
+REST API
+
+----------------------------------------------------
+
+transport.port
+
+9300
+
+Node Communication
+
+----------------------------------------------------
+
+discovery.type
+
+single-node
+
+Single Node Cluster
+
+Multi Node
+
+discovery.seed_hosts
+
+cluster.initial_master_nodes
+
+----------------------------------------------------
+
+path.data
+
+Stores Elasticsearch Data
+
+Default
+
+/var/lib/elasticsearch
+
+----------------------------------------------------
+
+path.logs
+
+Stores Elasticsearch Logs
+
+Default
+
+/var/log/elasticsearch
+
+=========================================================
+JVM
+=========================================================
+
+File
+
+/etc/elasticsearch/jvm.options
+
+Purpose
+
+Java Heap Configuration
+
+Example
+
+-Xms1g
+
+-Xmx1g
+
+Always Keep Equal
+
+=========================================================
+KIBANA
+=========================================================
+
+File
+
+/etc/kibana/kibana.yml
+
+Important Parameters
+
+server.port
+
+5601
+
+server.host
+
+0.0.0.0
+
+elasticsearch.hosts
+
+http://localhost:9200
+
+=========================================================
+LOGSTASH
+=========================================================
+
+Main Config
+
+/etc/logstash/logstash.yml
+
+Pipeline Location
+
+/etc/logstash/conf.d/
+
+Pipeline Structure
+
+Input
+
+↓
+
+Filter
+
+↓
+
+Output
+
+=========================================================
+FILEBEAT
+=========================================================
+
+Configuration
+
+/etc/filebeat/filebeat.yml
+
+Input
+
+Log Files
+
+Output
+
+Logstash
+
+or
+
+Elasticsearch
+
+Example
+
+paths
+
+/var/log/auth.log
+
+/var/log/syslog
+
+=========================================================
+SERVICE COMMANDS
+=========================================================
+
+systemctl status elasticsearch
+
+systemctl status kibana
+
+systemctl status logstash
+
+systemctl status filebeat
+
+systemctl restart elasticsearch
+
+systemctl restart kibana
+
+systemctl restart logstash
+
+systemctl restart filebeat
+
+=========================================================
+END
