@@ -1,0 +1,186 @@
+=========================================================
+          ELASTICSEARCH INTERVIEW NOTES
+=========================================================
+
+Q. What is Elasticsearch?
+
+Distributed Search Engine.
+
+Stores JSON Documents.
+
+Built on Apache Lucene.
+
+----------------------------------------------------
+
+Q. What is Index?
+
+Like Database.
+
+Example
+
+linux-logs
+
+----------------------------------------------------
+
+Q. What is Document?
+
+JSON Record stored inside Index.
+
+----------------------------------------------------
+
+Q. What is Cluster?
+
+Collection of Elasticsearch Nodes.
+
+----------------------------------------------------
+
+Q. What is Node?
+
+Single Elasticsearch Server.
+
+----------------------------------------------------
+
+Q. Difference between Cluster Name and Node Name?
+
+Cluster Name
+
+Logical Cluster Identifier
+
+Node Name
+
+Logical Server Identifier
+
+----------------------------------------------------
+
+Q. Primary Shard?
+
+Original Data.
+
+Each document first goes into Primary Shard.
+
+Only Primary accepts write operation.
+
+----------------------------------------------------
+
+Q. Replica Shard?
+
+Copy of Primary Shard.
+
+Provides
+
+High Availability
+
+Read Performance
+
+No write operation directly.
+
+----------------------------------------------------
+
+Example
+
+Index
+
+5 Primary
+
+1 Replica
+
+Result
+
+5 Primary
+
+5 Replica
+
+Total
+
+10 Shards
+
+----------------------------------------------------
+
+Q. Why Replica?
+
+Node Failure
+
+High Availability
+
+Load Balancing
+
+Read Scaling
+
+----------------------------------------------------
+
+Q. Can Replica exist without Primary?
+
+NO
+
+----------------------------------------------------
+
+Q. Can Primary exist without Replica?
+
+YES
+
+----------------------------------------------------
+
+Q. Default Replica?
+
+Normally
+
+1
+
+Can be changed.
+
+----------------------------------------------------
+
+Q. Why Cluster Health Yellow?
+
+Replica not allocated.
+
+Mostly happens in Single Node Cluster.
+
+----------------------------------------------------
+
+Q. Green Cluster?
+
+Everything allocated.
+
+----------------------------------------------------
+
+Q. Red Cluster?
+
+Primary Shards Missing.
+
+Data unavailable.
+
+----------------------------------------------------
+
+Q. Difference between 9200 and 9300?
+
+9200
+
+REST API
+
+Client Communication
+
+9300
+
+Internal Node Communication
+
+----------------------------------------------------
+
+Q. What is Heap?
+
+Java Memory
+
+Configured in
+
+jvm.options
+
+----------------------------------------------------
+
+Q. Why Same Xms and Xmx?
+
+Avoid JVM Heap Resizing.
+
+Better Performance.
+
+=========================================================
+END
