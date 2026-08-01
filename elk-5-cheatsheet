@@ -1,3 +1,6 @@
+"I have deployed and practiced a single-node ELK stack in my lab. I configured Filebeat to collect Linux logs, Logstash to process them, Elasticsearch to index them,
+and Kibana to visualize them. I also troubleshot service startup issues, security configuration, Logstash pipeline errors, and index creation."
+
 ====================================================================
                 ELK 5-MINUTE CHEAT SHEET
 ====================================================================
